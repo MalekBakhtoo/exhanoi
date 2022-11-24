@@ -12,6 +12,11 @@ var c3 = document.getElementById('C');
 
 const bstart = document.getElementById('start');
 const bNext = document.getElementById('next');
+const bstop = document.getElementById('stop');
+const bcontinue = document.getElementById('continue');
+const brestart = document.getElementById('restart');
+const bgoto = document.getElementById('gotoEnd');
+
 
 
 
@@ -20,7 +25,6 @@ for (i = 0; i < 3 * number; i++) {
     let block = document.createElement("div");
     block.setAttribute('class', 'block');
     block.style.width = `calc(3rem + ${3 * number - i}rem`;
-    //block.setAttribute('width', '`calc(3rem + ${number - i}rem`');
     diskes.push(block);
 }
 
@@ -43,11 +47,10 @@ for (i = 3 * number - 1; i >= 0; i--) {
     }
 }
 
-
 function move(c1Arr, c2Arr, to) {
 
     let block = c1Arr.shift();
-    c2Arr.unshift(block)
+    c2Arr.unshift(block);
     to.insertBefore(block, to.children[1]);
 }
 
@@ -58,8 +61,6 @@ function recordMove(f, e) {
 
     moves.push([name1, name2]);
 }
-
-
 
 function Hanoi(n, a, b, c) {
     if (n == 1) {
@@ -117,13 +118,17 @@ function blockSetter(movesArr, c1Arr, c2Arr, c3Arr, coul1, coul2, coul3) {
     }
     counter++;
 }
+
+var pause = false;
 function timingBlockSetter() {
     var interval = setInterval(() => {
-        blockSetter(moves, diskc1, diskc2, diskc3, c1, c2, c3);
-        if (counter >= moves.length ) {
-            clearInterval(interval);
+        if (!pause) {
+            blockSetter(moves, diskc1, diskc2, diskc3, c1, c2, c3);
+            if (counter >= moves.length) {
+                clearInterval(interval);
+            }
         }
-    }, 1000)
+    }, 2000)
 }
 /// calc moves 
 exHanoi(number, c1, c2, c3);
@@ -133,5 +138,11 @@ console.log(moves);
 
 bstart.addEventListener("click", () => timingBlockSetter());
 bNext.addEventListener('click', () => blockSetter(moves, diskc1, diskc2, diskc3, c1, c2, c3));
-
-
+bstop.addEventListener('click', () => pause = true);
+bcontinue.addEventListener('click', () => pause = false);
+brestart.addEventListener('click' , () => location.reload());
+bgoto.addEventListener('click' , () => {
+    for ( i= diskes.length -1 ; i>=0 ; i--){
+        c3.appendChild(diskes[i]);
+    }
+});
