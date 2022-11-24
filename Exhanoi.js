@@ -2,11 +2,16 @@
 
 const number = prompt('number of the blocks');
 
+// coulmns
+
 var c1 = document.getElementById('A');
 var c2 = document.getElementById('B');
 var c3 = document.getElementById('C');
 
+// btns
+
 const bstart = document.getElementById('start');
+const bNext = document.getElementById('next');
 
 
 
@@ -39,34 +44,34 @@ for (i = 3 * number - 1; i >= 0; i--) {
 }
 
 
-function move(c1Arr,c2Arr, to) {
+function move(c1Arr, c2Arr, to) {
 
     let block = c1Arr.shift();
-    c2Arr.push(block);
-    to.insertBefore(block);
+    c2Arr.unshift(block)
+    to.insertBefore(block, to.children[1]);
 }
 
 var moves = [];
-function recordMove ( f , e){
+function recordMove(f, e) {
     let name1 = f.id;
     let name2 = e.id;
 
-    moves.push([name1 , name2]);
+    moves.push([name1, name2]);
 }
 
 
 
-function Hanoi(n ,a , b ,c ) {
+function Hanoi(n, a, b, c) {
     if (n == 1) {
         recordMove(a, c);
     } else {
-        Hanoi(n - 1 , a , c ,b);
+        Hanoi(n - 1, a, c, b);
         recordMove(a, c);
-        Hanoi(n - 1 ,b, a , c);
+        Hanoi(n - 1, b, a, c);
     }
 }
 
-function exHanoi(n , a , b , c ) {
+function exHanoi(n, a, b, c) {
 
     if (n == 1) {
         recordMove(c, b);
@@ -75,12 +80,58 @@ function exHanoi(n , a , b , c ) {
         recordMove(b, c);
         recordMove(a, c);
     } else {
-        exHanoi(n - 1 , a , b ,c);
-        Hanoi(3 * n - 2 ,c , a ,b);
+        exHanoi(n - 1, a, b, c);
+        Hanoi(3 * n - 2, c, a, b);
         recordMove(a, c);
-        Hanoi(3 * n - 1 , b , a ,c);
-        console.log(moves)
+        Hanoi(3 * n - 1, b, a, c);
     }
 }
-bstart.addEventListener("click", () => exHanoi(number , c1 , c2 ,c3));
+
+var counter = 0;
+
+function blockSetter(movesArr, c1Arr, c2Arr, c3Arr, coul1, coul2, coul3) {
+
+    if (movesArr[counter][0] == 'A' && movesArr[counter][1] == 'B') {
+        move(c1Arr, c2Arr, coul2);
+    }
+    else if (movesArr[counter][0] == 'A' && movesArr[counter][1] == 'C') {
+        move(c1Arr, c3Arr, coul3);
+    }
+    else if (movesArr[counter][0] == 'B' && movesArr[counter][1] == 'A') {
+        move(c2Arr, c1Arr, coul1);
+    }
+    else if (movesArr[counter][0] == 'B' && movesArr[counter][1] == 'C') {
+        move(c2Arr, c3Arr, coul3);
+    }
+    else if (movesArr[counter][0] == 'C' && movesArr[counter][1] == 'B') {
+        move(c3Arr, c2Arr, coul2);
+    }
+    else if (movesArr[counter][0] == 'C' && movesArr[counter][1] == 'A') {
+        move(c3Arr, c1Arr, coul1);
+    }
+    // event handling
+    if (counter == moves.length - 1) {
+        bNext.disabled = true;
+        bstart.disabled = true;
+
+    }
+    counter++;
+}
+function timingBlockSetter() {
+    var interval = setInterval(() => {
+        blockSetter(moves, diskc1, diskc2, diskc3, c1, c2, c3);
+        if (counter >= moves.length ) {
+            clearInterval(interval);
+        }
+    }, 1000)
+}
+/// calc moves 
+exHanoi(number, c1, c2, c3);
+console.log(moves);
+
+// btn events 
+
+bstart.addEventListener("click", () => timingBlockSetter());
+bNext.addEventListener('click', () => blockSetter(moves, diskc1, diskc2, diskc3, c1, c2, c3));
+
 
