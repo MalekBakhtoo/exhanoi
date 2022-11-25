@@ -18,9 +18,7 @@ const brestart = document.getElementById('restart');
 const bgoto = document.getElementById('gotoEnd');
 
 
-
-
-let diskes = [];
+const diskes = [];
 for (i = 0; i < 3 * number; i++) {
     let block = document.createElement("div");
     block.setAttribute('class', 'block');
@@ -51,7 +49,8 @@ function move(c1Arr, c2Arr, to) {
 
     let block = c1Arr.shift();
     c2Arr.unshift(block);
-    to.insertBefore(block, to.children[1]);
+    goanimated(block, to);
+
 }
 
 var moves = [];
@@ -115,6 +114,7 @@ function blockSetter(movesArr, c1Arr, c2Arr, c3Arr, coul1, coul2, coul3) {
         bNext.disabled = true;
         bstart.disabled = true;
 
+
     }
     counter++;
 }
@@ -128,7 +128,7 @@ function timingBlockSetter() {
                 clearInterval(interval);
             }
         }
-    }, 2000)
+    }, 3000)
 }
 /// calc moves 
 exHanoi(number, c1, c2, c3);
@@ -140,9 +140,56 @@ bstart.addEventListener("click", () => timingBlockSetter());
 bNext.addEventListener('click', () => blockSetter(moves, diskc1, diskc2, diskc3, c1, c2, c3));
 bstop.addEventListener('click', () => pause = true);
 bcontinue.addEventListener('click', () => pause = false);
-brestart.addEventListener('click' , () => location.reload());
-bgoto.addEventListener('click' , () => {
-    for ( i= diskes.length -1 ; i>=0 ; i--){
+brestart.addEventListener('click', () => location.reload());
+bgoto.addEventListener('click', () => {
+    for (i = diskes.length - 1; i >= 0; i--) {
         c3.appendChild(diskes[i]);
     }
 });
+
+
+//animation moves
+
+
+function goanimated(block, to) {
+
+    let pos = 3;
+    block.style.backgroundColor = 'rgb(163, 30, 10)';
+    var loop = setInterval(() => {
+        if (pos == 100) {
+            clearInterval(loop);
+            to.insertBefore(block, to.children[1]);
+            godownanimated(block)
+
+        } else {
+            pos++;
+            block.style.marginBottom = pos + 'px';
+
+        }
+    }, 10);
+
+}
+
+function godownanimated(block) {
+
+    let pos = 100;
+
+    var looper = setInterval(() => {
+        if (pos == 3) {
+            clearInterval(looper);
+            block.style.backgroundColor = 'rgb(41, 26, 202';
+            if (counter == moves.length - 1) {
+                document.getElementsByTagName('body')[0].style.backgroundColor = 'rgb(50, 167, 11)';
+            }
+
+        } else {
+            pos--;
+            block.style.marginBottom = pos + 'px';
+
+        }
+    }, 10);
+
+}
+
+
+
