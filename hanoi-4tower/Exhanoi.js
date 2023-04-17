@@ -8,15 +8,13 @@ var c2 = document.getElementById('B');
 var c3 = document.getElementById('C');
 var c4 = document.getElementById('D');
 
-
 // btns
-
 const bstart = document.getElementById('start');
 const bNext = document.getElementById('next');
 const bstop = document.getElementById('stop');
 const bcontinue = document.getElementById('continue');
 const brestart = document.getElementById('restart');
-const bgoto = document.getElementById('gotoEnd');
+
 
 
 const diskesW = [];
@@ -55,7 +53,6 @@ function move(c1Arr, c2Arr, to) {
     to.insertBefore(block, to.children[1]);
     
 }
-
 var fmoves = [];
 var smoves = [];
 var thmoves = [];
@@ -131,8 +128,6 @@ function blockSetter(movesArr, c1Arr, c2Arr, c3Arr, c4Arr, coul1, coul2, coul3, 
     if (counter == moves.length - 1) {
         bNext.disabled = true;
         bstart.disabled = true;
-
-
     }
     counter++;
 }
@@ -148,57 +143,8 @@ function timingBlockSetter() {
         }
     }, 1000)
 }
-// btn events 
-
 bstart.addEventListener("click", () => timingBlockSetter());
 bNext.addEventListener('click', () => blockSetter(moves, diskc1, diskc2, diskc3,diskc4, c1, c2, c3, c4));
 bstop.addEventListener('click', () => pause = true);
 bcontinue.addEventListener('click', () => pause = false);
 brestart.addEventListener('click', () => location.reload());
-bgoto.addEventListener('click', () => {
-    for (i = diskes.length - 1; i >= 0; i--) {
-        c3.appendChild(diskes[i]);
-    }
-});
-
-
-//animation moves
-
-
-// function goanimated(block, to) {
-
-//     let pos = 3;
-//     block.style.backgroundColor = 'rgb(163, 30, 10)';
-//     var loop = setInterval(() => {
-//         if (pos == 100) {
-//             clearInterval(loop);
-//             to.insertBefore(block, to.children[1]);
-//             godownanimated(block)
-
-//         } else {
-//             pos++;
-//             block.style.marginBottom = pos + 'px';
-
-//         }
-//     }, 10);
-
-// }
-// function godownanimated(block) {
-//     let pos = 100;
-//     var looper = setInterval(() => {
-//         if (pos == 3) {
-//             clearInterval(looper);
-//             block.style.backgroundColor = 'rgb(41, 26, 202';
-//             if (counter == moves.length - 1) {
-//                 document.getElementsByTagName('body')[0].style.backgroundColor = 'rgb(50, 167, 11)';
-//             }
-//         } else {
-//             pos--;
-//             block.style.marginBottom = pos + 'px';
-//         }
-//     }, 10);
-// }
-
-
-
-
